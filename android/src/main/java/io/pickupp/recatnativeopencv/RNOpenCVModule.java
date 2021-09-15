@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -109,6 +110,21 @@ public class RNOpenCVModule extends ReactContextBaseJavaModule {
             promise.resolve(maxLength);
         } catch (Exception e) {
             promise.reject("unable to find max edge", e);
+        }
+    }
+
+    @ReactMethod
+    public void detectLight(String imageAsBase64, double gaussianBlurValue, Promise promise) {
+        try {
+            Mat rgba = this.imageBase64ToMat(imageAsBase64);
+            Mat grayScaleGaussianBlur = new Mat();
+            Imgproc.cvtColor(rgba, grayScaleGaussianBlur, Imgproc.COLOR_BGR2GRAY);
+            Imgproc.GaussianBlur(gaussianBlurValue, gaussianBlurValue, new Size(gaussianBlurValue, gaussianBlurValue), 0.0, );
+            Core.MinMaxLocResult minMaxLocResultBlur = Core.minMaxLoc(grayScaleGaussianBlur);
+            Point maxLoc = minMaxLocResultBlur.maxLoc;
+            promise.resolve("" + maxLoc.x + "," + maxLoc.y);
+        } catch (Exception e) {
+            promise.reject("unable to detectLight", e);
         }
     }
 
