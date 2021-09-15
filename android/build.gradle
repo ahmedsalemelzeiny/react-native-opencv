@@ -4,6 +4,9 @@ buildscript {
         jcenter()
         google()
         mavenCentral()
+        maven {
+            url "https://dl.bintray.com/pickuppdev/pickupp"
+        }
     }
 
     dependencies {
@@ -32,5 +35,5 @@ repositories {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation 'org.opencv.android:opencv-android-sdk:3.4.+'
+    implementation 'org.opencv.android:opencv-android-sdk:3.4.1'
 }
