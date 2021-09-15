@@ -119,7 +119,7 @@ public class RNOpenCVModule extends ReactContextBaseJavaModule {
             Mat rgba = this.imageBase64ToMat(imageAsBase64);
             Mat grayScaleGaussianBlur = new Mat();
             Imgproc.cvtColor(rgba, grayScaleGaussianBlur, Imgproc.COLOR_BGR2GRAY);
-            Imgproc.GaussianBlur(gaussianBlurValue, gaussianBlurValue, new Size(gaussianBlurValue, gaussianBlurValue), 0.0, );
+            Imgproc.GaussianBlur(gaussianBlurValue, gaussianBlurValue, new Size(gaussianBlurValue, gaussianBlurValue), 0.0);
             Core.MinMaxLocResult minMaxLocResultBlur = Core.minMaxLoc(grayScaleGaussianBlur);
             Point maxLoc = minMaxLocResultBlur.maxLoc;
             promise.resolve("" + maxLoc.x + "," + maxLoc.y);
