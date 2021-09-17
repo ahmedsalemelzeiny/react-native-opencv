@@ -134,7 +134,7 @@ RCT_EXPORT_METHOD(detectLight
     // converting UIImage to OpenCV format - Mat
     cv::Mat matImageGrey;
     // converting image's color space (RGB) to grayscale
-    cv::cvtColor(*matImage, matImageGrey, COLOR_BGR2GRAY);
+    cv::cvtColor(*matImage, matImageGrey, CV_BGR2GRAY);
     
     // This is done so as to prevent a lot of false circles from being detected
     cv::GaussianBlur(matImageGrey, matImageGrey, cv::Size(value, value), 0);
