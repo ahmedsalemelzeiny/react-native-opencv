@@ -109,6 +109,43 @@ RCT_EXPORT_METHOD(findMaxEdge
   }
 }
 
+
+RCT_EXPORT_METHOD(detectLight
+                  : (NSString *)imageAsBase64 resolver
+                  : (double)gaussianBlurValue resolver
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+  @try {
+    UIImage *image = [self decodeBase64ToImage:imageAsBase64];
+    cv::Mat matImage = [self convertUIImageToCVMat:image];
+
+    NSString * maxValue = [self detectLight:&matImage gaussianBlurValue: gaussianBlurValue];
+
+    resolve(maxValue);
+  } @catch (NSException *exception) {
+    NSError *error;
+    reject(@"error", exception.reason, error);
+  }
+}
+
+- (NSString *)detectLight:(cv::Mat *)matImage gaussianBlurValue: (double)value {
+    
+    //    cv::Mat
+    // converting UIImage to OpenCV format - Mat
+    cv::Mat matImageGrey;
+    // converting image's color space (RGB) to grayscale
+    cv::cvtColor(*matImage, matImageGrey, COLOR_BGR2GRAY);
+    
+    // This is done so as to prevent a lot of false circles from being detected
+    cv::GaussianBlur(matImageGrey, matImageGrey, cv::Size(value, value), 0);
+    
+    cv::Point maxPoint;
+    
+    cv::minMaxLoc(matImageGrey, NULL, 0, 0, &maxPoint, cv::noArray());
+    
+    return [NSString stringWithFormat:@"%d, %d", maxPoint.x, maxPoint.y];
+}
+
 // native code
 - (NSString *)imageToNSString:(UIImage *)image {
   NSData *imageData = UIImagePNGRepresentation(image);
